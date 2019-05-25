@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import com.example.firebase.viewmodels.TODOViewModel
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.activity_todo.*
 
 class TODOActivity : AppCompatActivity() {
@@ -15,6 +16,7 @@ class TODOActivity : AppCompatActivity() {
     private val todoViewModel: TODOViewModel by lazy {
         ViewModelProviders.of(this).get(TODOViewModel::class.java)
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_todo)
@@ -22,12 +24,14 @@ class TODOActivity : AppCompatActivity() {
 
         setUpObservables()
         setUpListeners()
+        FirebaseMessaging.getInstance().subscribeToTopic("updatelist")
+
         todoViewModel.getItemListRealTime()
         todoViewModel.getItemRealTime()
     }
 
     private fun setUpListeners() {
-        imvExitApp?.setOnClickListener{
+        imvExitApp?.setOnClickListener {
             todoViewModel.closeSession()
         }
         btnAdd?.setOnClickListener {
@@ -44,13 +48,13 @@ class TODOActivity : AppCompatActivity() {
         }
         btnAddItemFfromREsult?.setOnClickListener {
             val intent = Intent(this@TODOActivity, AddTODOFormActivity::class.java)
-            startActivityForResult(intent, AddTODOFormActivity.TITLE_TODO_EXTRA) // ADD_TODO_REQUEST_CODE
+            //startActivityForResult(intent, AddTODOFormActivity.TITLE_TODO_EXTRA) // ADD_TODO_REQUEST_CODE
         }
     }
 
     private fun setUpObservables() {
         todoViewModel.iscloseSessionUser.observe(this, Observer { isCloseSession ->
-            if (isCloseSession){
+            if (isCloseSession) {
                 finish()
                 startActivity(Intent(this@TODOActivity, MainActivity::class.java))
             }
@@ -59,15 +63,15 @@ class TODOActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode ==AddTODOFormActivity.ADD_TODO_EXTRA){
-            if (resultCode = Activity.RESULT_OK){
-                data?.extras?.let {
-                    val title = it.getString(AddTODOFormActivity.DESCRIPTION_TODO_EXTRA)
-                    val desc = it.getString(AddTODOFormActivity.TITLE_TODO_EXTRA)
-                    //Validar
-                    todoViewModel.addItemTODO(title, desc)
-                }
-            }
-        }
+//        if (requestCode ==AddTODOFormActivity.ADD_TODO_EXTRA){
+//            if (resultCode = Activity.RESULT_OK){
+//                data?.extras?.let {
+//                    val title = it.getString(AddTODOFormActivity.DESCRIPTION_TODO_EXTRA)
+//                    val desc = it.getString(AddTODOFormActivity.TITLE_TODO_EXTRA)
+//                    //Validar
+//                    todoViewModel.addItemTODO(title, desc)
+//                }
+//            }
+//        }
     }
 }

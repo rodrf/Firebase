@@ -27,6 +27,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        intent?.extras?.let {
+            val idbuy = it.getString("idBuy")
+            Log.v("Data", "Data from notitifcation: $idbuy")
+        }
+
         setUpObservers()
         setUpListeners()
         modelViewLogin.isUserLogged()

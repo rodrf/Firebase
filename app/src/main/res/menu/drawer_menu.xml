@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/action_home"
+            android:title="home TODO"
+            android:icon="@drawable/ic_action_list"/>
+        <item android:id="@+id/actionDoneList"
+            android:title="Done items"
+            android:icon="@drawable/ic_done"/>
+        <item android:id="@+id/actionCloseSession"
+            android:title="Close session"
+            android:icon="@drawable/ic_done"/>
+    </group>
+</menu>
